@@ -1,11 +1,33 @@
+//delete a song
+var deleteSong = function() {
+	var li = this.parentNode;
+	var id = li.id.substring(4);
+	console.log(id)
+	var xhr = new XMLHttpRequest();
+	xhr.open("DELETE", "http://localhost:3000/song/"+id);
+	xhr.addEventListener("load", function(){
+		if(JSON.parse(xhr.responseText).deleted === true) {
+			li.remove();
+		}
+	});
+	xhr.send();
+}
+
+
 // set up one song's li
 var createLiForSong = function(li, song) {
 	li.innerHTML = "";
 	li.setAttribute("id", "song" + song.id)
-	var songText = song.song_title + " length: " + song.rt + " artist: " + song.artist + " album: " + song.album + " genre: " + song.genre + " rating: ";
+	var songText = song.song_title + " length: " + song.rt + " artist: " + song.artist + " album: " + song.album + " rating: " + song.star;
 	var songTextNode = document.createTextNode(songText);
 	li.appendChild(songTextNode)
-}
+
+	// add delete button
+	var deleteButton = document.createElement("button");
+	deleteButton.innerText = "DELETE";
+	deleteButton.addEventListener("click", deleteSong);
+	li.appendChild(deleteButton);
+};
 
 
 // show one song
@@ -40,7 +62,6 @@ addSongButton.addEventListener("click", function() {
 	var newRt = document.getElementById("newSongRt").value;
 	var newArtist = document.getElementById("newSongArtist").value;
 	var newAlbum = document.getElementById("newSongAlbum").value;
-	var newGenre = document.getElementById("newSongGenre").value;
 	var newStar = document.getElementById("newSongStar").value;
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:3000/songs");
@@ -52,7 +73,6 @@ addSongButton.addEventListener("click", function() {
 		newRt.value = "";
 		newArtist.value = "";
 		newAlbum.value = "";
-		newGenre.value = "";
 		newStar.value = "";
 
 	});
@@ -61,7 +81,6 @@ addSongButton.addEventListener("click", function() {
 		rt: newRt,
 		artist: newArtist,
 		album: newAlbum,
-		genre: newGenre,
 		star: newStar,
 	};
 	xhr.send(JSON.stringify(newSong));

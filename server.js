@@ -23,14 +23,13 @@ app.post("/songs", function(req,res){
 	var rt = req.body.rt;
 	var artist = req.body.artist;
 	var album = req.body.album;
-	var genre = req.body.genre;
 	var star = req.body.star;
 
 	console.log(req.body)
 
 
 //create song
-	db.run("INSERT INTO music (song_title, rt, artist, album, genre, star) VALUES (?, ?, ?, ?, ? ,?)", title, rt, artist, album, genre, star, function(err){
+	db.run("INSERT INTO music (song_title, rt, artist, album, star) VALUES (?, ?, ?, ? ,?)", title, rt, artist, album, star, function(err){
 		if (err) {
 			console.log(err);
 		} else {
@@ -47,6 +46,17 @@ app.post("/songs", function(req,res){
 	});
 });
 
+// delete a song
+app.delete("/song/:id", function(req,res) {
+	var id= req.params.id;
+	console.log(req.params.id)
+	db.run("DELETE FROM music WHERE id = ?", id, function(err){
+		if(err) {console.log(err);}
+		else{
+			res.json({deleted:true})
+		}
+	})
+});
 
 
 

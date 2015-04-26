@@ -5,6 +5,5 @@ CREATE TABLE music (
   rt INTEGER,
   artist TEXT,
     album TEXT,
-    genre TEXT,
-    star INTEGER
+    star TEXT
 );
