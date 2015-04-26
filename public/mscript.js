@@ -24,7 +24,6 @@ var showAllMusic = function() {
 	xhr.open("GET", "http://localhost:3000/music");
 	xhr.addEventListener("load", function() {
 		var songs = JSON.parse(xhr.response);
-		console.log(songs)
 		songs.forEach(function(song) {
 			showSong(song);
 		});
@@ -36,15 +35,16 @@ var showAllMusic = function() {
 //New Song 
 var addSongButton = document.getElementById("newSong");
 addSongButton.addEventListener("click", function() {
-	var newTitle = document.getElementById("newSongTitle");
-	var newRt = document.getElementById("newSongRt");
-	var newArtist = document.getElementById("newSongArtist");
-	var newAlbum = document.getElementById("newSongAlbum");
-	var newGenre = document.getElementById("newSongGenre");
-	var newStar = document.getElementById("newSongStar");
+	var newTitle = document.getElementById("newSongTitle").value;
+		console.log(newTitle);
+	var newRt = document.getElementById("newSongRt").value;
+	var newArtist = document.getElementById("newSongArtist").value;
+	var newAlbum = document.getElementById("newSongAlbum").value;
+	var newGenre = document.getElementById("newSongGenre").value;
+	var newStar = document.getElementById("newSongStar").value;
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://localhost:3000/songs");
-	xhr.setRequestHeader("Content-Type", "application/jason");
+	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.addEventListener("load", function() {
 		var returnedSong = JSON.parse(xhr.response);
 		showSong(returnedSong)
@@ -54,14 +54,15 @@ addSongButton.addEventListener("click", function() {
 		newAlbum.value = "";
 		newGenre.value = "";
 		newStar.value = "";
+
 	});
 	var newSong = {
-		title: newTitle.value,
-		rt: newRt.value,
-		artist: newArtist.value,
-		album: newAlbum.value,
-		genre: newGenre.value,
-		star: newStar.value
+		title: newTitle,
+		rt: newRt,
+		artist: newArtist,
+		album: newAlbum,
+		genre: newGenre,
+		star: newStar,
 	};
 	xhr.send(JSON.stringify(newSong));
 

@@ -17,7 +17,35 @@ app.get("/music", function(req, res){
 	});
 });
 
+// create song
+app.post("/songs", function(req,res){
+	var title = req.body.title;
+	var rt = req.body.rt;
+	var artist = req.body.artist;
+	var album = req.body.album;
+	var genre = req.body.genre;
+	var star = req.body.star;
 
+	console.log(req.body)
+
+
+//create song
+	db.run("INSERT INTO music (song_title, rt, artist, album, genre, star) VALUES (?, ?, ?, ?, ? ,?)", title, rt, artist, album, genre, star, function(err){
+		if (err) {
+			console.log(err);
+		} else {
+			var id = this.lastID;
+			db.get("SELECT * FROM music WHERE id = ?", id, function(err,row){
+				if (err) {
+					console.log (err); 
+					
+				} else {
+					res.json(row);
+				}
+			});
+		}
+	});
+});
 
 
 
