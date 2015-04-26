@@ -4,23 +4,106 @@ var deleteSong = function() {
 	var id = li.id.substring(4);
 	console.log(id)
 	var xhr = new XMLHttpRequest();
-	xhr.open("DELETE", "http://localhost:3000/song/"+id);
-	xhr.addEventListener("load", function(){
-		if(JSON.parse(xhr.responseText).deleted === true) {
+	xhr.open("DELETE", "http://localhost:3000/song/" + id);
+	xhr.addEventListener("load", function() {
+		if (JSON.parse(xhr.responseText).deleted === true) {
 			li.remove();
 		}
 	});
 	xhr.send();
 }
 
+// update a song
+var updateSong = function(li, newTitle, newRt, newArtist, newAlbum, newStar){
+	var id = li.id.substring(4);
+	console.log(id)
+	var xhr = new XMLHttpRequest();
+	xhr.open("PUT", "http://localhost:3000/song/"+ id);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.addEventListener("load", function(){
+		var returnedSong = JSON.parse(xhr.response);
+		createLiForSong(li, returnedSong);
+	});
+	var updatedSong = {title: newTitle, rt: newRt, artist: newArtist, album: newAlbum, star: newStar};
+	xhr.send(JSON.stringify(updatedSong))
+}
+
+//edit a song
+var editSong = function(li, title, rt, artist, album, star) {
+	li.innerHTML = '';
+	var id = li.id.substring(4);
+	//song title txtbx
+	var titleField = document.createElement("input");
+	titleField.setAttribute("type", "text");
+	titleField.value = title;
+	li.appendChild(titleField);
+	//filler text
+	var space = document.createTextNode(" ");
+	li.appendChild(space);
+
+	//song rt txtbx
+	var rtField = document.createElement("input");
+	rtField.setAttribute("rt", "text");
+	rtField.value = rt;
+	li.appendChild(rtField);
+
+	space;
+
+	// song artist txtbx
+	var artistField = document.createElement("input");
+	artistField.setAttribute("artist", "text");
+	artistField.value = artist;
+	li.appendChild(artistField);
+
+	space;
+
+	// song albulm txtbx
+	var albumField = document.createElement("input");
+	albumField.setAttribute("album", "text");
+	albumField.value = album;
+	li.appendChild(albumField);
+
+	//rating txt
+	var rating = document.createTextNode(" rating:");
+	li.appendChild(rating);
+
+	//rating txtbx
+	var starField = document.createElement("input");
+	starField.setAttribute("album", "text");
+	starField.value = star;
+	li.appendChild(starField);
+	//updatebutton
+
+	var updateButton = document.createElement("button");
+	updateButton.innerText = "Update";
+	updateButton.addEventListener("click", function() {
+		var newTitle = titleField.value;
+		var newRt = rtField.value;
+		var newArtist = artistField.value;
+		var newAlbum = albumField.value;
+		var newStar = starField.value;
+		updateSong(li, newTitle, newRt, newArtist, newAlbum, newStar);
+	})
+	li.appendChild(updateButton);
+};
+
+
 
 // set up one song's li
 var createLiForSong = function(li, song) {
 	li.innerHTML = "";
 	li.setAttribute("id", "song" + song.id)
-	var songText = song.song_title + " length: " + song.rt + " artist: " + song.artist + " album: " + song.album + " rating: " + song.star;
+	var songText = song.song_title + " " + song.rt + " " + song.artist + " " + song.album + " rating: " + song.star;
 	var songTextNode = document.createTextNode(songText);
 	li.appendChild(songTextNode)
+
+	// add edit button
+	var editButton = document.createElement("button");
+	editButton.innerText = "Edit";
+	editButton.addEventListener("click", function() {
+		editSong(li, song.song_title, song.rt, song.artist, song.album, song.star)
+	});
+	li.appendChild(editButton);
 
 	// add delete button
 	var deleteButton = document.createElement("button");
@@ -28,6 +111,7 @@ var createLiForSong = function(li, song) {
 	deleteButton.addEventListener("click", deleteSong);
 	li.appendChild(deleteButton);
 };
+
 
 
 // show one song
@@ -58,7 +142,7 @@ var showAllMusic = function() {
 var addSongButton = document.getElementById("newSong");
 addSongButton.addEventListener("click", function() {
 	var newTitle = document.getElementById("newSongTitle").value;
-		console.log(newTitle);
+	console.log(newTitle);
 	var newRt = document.getElementById("newSongRt").value;
 	var newArtist = document.getElementById("newSongArtist").value;
 	var newAlbum = document.getElementById("newSongAlbum").value;

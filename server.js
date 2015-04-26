@@ -25,7 +25,6 @@ app.post("/songs", function(req,res){
 	var album = req.body.album;
 	var star = req.body.star;
 
-	console.log(req.body)
 
 
 //create song
@@ -58,6 +57,27 @@ app.delete("/song/:id", function(req,res) {
 	})
 });
 
+
+//update a song
+app.put("/song/:id", function(req, res) {
+	var id = req.params.id;
+	var title = req.body.title;
+	var rt = req.body.rt;
+	var artist = req.body.artist;
+	var album = req.body.album;
+	var star = req.body.star;
+	db.run("UPDATE music SET song_title = ?, rt = ?, artist = ?, album = ?, star = ? WHERE id = ?", title, rt, artist, album, star, id, function(err){
+		if(err) {console.log(err);}
+		else {
+			db.get("SELECT * FROM music WHERE id = ?", id, function(err, row){
+				if(err) {console.log(err);}
+				else{
+					res.json(row);
+				}
+			});
+		}
+	});
+});
 
 
 app.listen(3000);
