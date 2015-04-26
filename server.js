@@ -12,7 +12,6 @@ app.get("/music", function(req, res){
 		if(err){
 			console.log(err);
 		} else {
-			res.render('index.html');
 			res.json(rows);
 		}
 	});
