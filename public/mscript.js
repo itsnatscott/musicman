@@ -4,7 +4,7 @@ var deleteSong = function() {
 	var id = li.id.substring(4);
 	console.log(id)
 	var xhr = new XMLHttpRequest();
-	xhr.open("delete", "http://localhost:3000/song/" + id);
+	xhr.open("delete", "http://45.55.154.205/song/" + id);
 	xhr.addEventListener("load", function() {
 		if (JSON.parse(xhr.responseText).deleted === true) {
 			li.remove();
@@ -18,7 +18,7 @@ var updateSong = function(li, newTitle, newRt, newArtist, newAlbum, newStar){
 	var id = li.id.substring(4);
 	console.log(id)
 	var xhr = new XMLHttpRequest();
-	xhr.open("PUT", "http://localhost:3000/song/"+ id);
+	xhr.open("PUT", "http://45.55.154.205/song/"+ id);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.addEventListener("load", function(){
 		var returnedSong = JSON.parse(xhr.response);
@@ -166,7 +166,7 @@ var showSong = function(song) {
 // show all music
 var showAllMusic = function() {
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://localhost:3000/music");
+	xhr.open("GET", "http://45.55.154.205/music");
 	xhr.addEventListener("load", function() {
 		var songs = JSON.parse(xhr.response);
 		songs.forEach(function(song) {
@@ -187,7 +187,7 @@ addSongButton.addEventListener("click", function() {
 	var newAlbum = document.getElementById("newSongAlbum").value;
 	var newStar = document.getElementById("newSongStar").value;
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://localhost:3000/songs");
+	xhr.open("POST", "http://45.55.154.205/songs");
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.addEventListener("load", function() {
 		var returnedSong = JSON.parse(xhr.response);
