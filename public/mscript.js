@@ -4,7 +4,7 @@ var deleteSong = function() {
 	var id = li.id.substring(4);
 	console.log(id)
 	var xhr = new XMLHttpRequest();
-	xhr.open("DELETE", "http://localhost:3000/song/" + id);
+	xhr.open("delete", "http://localhost:3000/song/" + id);
 	xhr.addEventListener("load", function() {
 		if (JSON.parse(xhr.responseText).deleted === true) {
 			li.remove();
@@ -69,9 +69,20 @@ var editSong = function(li, title, rt, artist, album, star) {
 
 	//rating txtbx
 	var starField = document.createElement("input");
-	starField.setAttribute("album", "text");
+	starField.setAttribute("star", "text");
 	starField.value = star;
-	li.appendChild(starField);
+
+
+//////////////////////trying to create drop down select menu
+// for (var i = 0; i < 3; i++) {
+//     var array = ["&#9733","&#9733&#9733","&#9733&#9733&#9733"]
+//     var option = document.createElement("option");
+//     option.value = i;
+//     option.text = array[i];
+//     starField.appendChild(option);
+// }
+
+li.appendChild(starField);
 	//updatebutton
 
 	var updateButton = document.createElement("button");
@@ -95,10 +106,37 @@ var createLiForSong = function(li, song) {
 	li.setAttribute("id", "song" + song.id)
 	var songText = song.song_title + " " + song.rt + " " + song.artist + " " + song.album + " rating: " + song.star;
 	var songTextNode = document.createTextNode(songText);
-	li.appendChild(songTextNode)
+	li.appendChild(songTextNode);
+
+	// set up one song as a list of its parts/////
+	// li.innerHTML = "";
+	// var ul1 = document.createElement("ul");
+	// ul1.innerHTML = ""
+	// ul1.setAttribute("id", "title"+song.id);
+	// var titleText = song.song_title + " ";
+	// var titleTextNode = document.createTextNode(titleText);
+	// ul1.appendChild(titleTextNode);
+
+	// var ul2 = document.createElement("ul");
+	// ul2.innerHTML = ""
+	// ul2.setAttribute("id", "artist"+song.id);
+	// var artistText = song.artist + " "
+	// var artistTextNode = document.createTextNode(artistText);
+	// ul2.appendChild(artistTextNode)
+	// console.log(ul1,ul2)
+
+	// li.setAttribute("id", "song" + song.id)
+	// var songText =  song.rt + " " + song.album + " rating: " + song.star;
+	// var songTextNode = document.createTextNode(songText);
+	// console.log(ul1)
+	// li.innerHTML = ul1 + ul2
+	// li.appendChild(songTextNode);
+
+/////////////////
 
 	// add edit button
 	var editButton = document.createElement("button");
+	editButton.setAttribute("class", "edit")
 	editButton.innerText = "Edit";
 	editButton.addEventListener("click", function() {
 		editSong(li, song.song_title, song.rt, song.artist, song.album, song.star)
@@ -107,6 +145,7 @@ var createLiForSong = function(li, song) {
 
 	// add delete button
 	var deleteButton = document.createElement("button");
+	deleteButton.setAttribute("class", "delete")
 	deleteButton.innerText = "DELETE";
 	deleteButton.addEventListener("click", deleteSong);
 	li.appendChild(deleteButton);
